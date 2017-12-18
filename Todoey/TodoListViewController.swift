@@ -10,11 +10,14 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    
+    let defualts = UserDefaults.standard
     var todoArray  = ["Find Mike", "Destroy the Demogorgon","Eleven"]
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        if let items = defualts.array(forKey: "TodoListItems") as? [String] {
+            todoArray = items
+        }
         tableView.reloadData()
         
     }
@@ -67,12 +70,15 @@ class TodoListViewController: UITableViewController {
             print("Success")
             print(localTextField.text!)
             self.todoArray.append(localTextField.text!)
+            self.defualts.set(self.todoArray, forKey: "TodoListItems")
             self.tableView.reloadData()
+          
             
         }
         alertController.addTextField(configurationHandler: { (textField) in
             textField.placeholder = "Add new item"
             localTextField = textField
+           
     
         })
         alertController.addAction(action)
